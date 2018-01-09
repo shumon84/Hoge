@@ -1,4 +1,3 @@
 cmake_minimum_required(VERSION 3.10)
 project(Test VERSION 1.0)
-add_executable( Test main.cpp)
- 
+add_subdirectory(extern)
