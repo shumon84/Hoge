@@ -2,6 +2,7 @@
 #include<string.h>
 #include<dlfcn.h>
 #include<stdlib.h>
+#include<math.h>
 struct Array{
   void *handle;
   int (*Sum)(void);		/* 合計 */
@@ -60,24 +61,27 @@ int main(){
 
   int n;
   int i;
+  char str[32];
   printf("要素数1 : ");
-  scanf("%d",&n);
+  scanf("%d", &n);
   a = new_Array(n);
+  sprintf(str, "a[%%%dd] = ", (int)log10(a -> GetSize() - 1) + 1);
   for(i = 0; i < n; i++){
     int n;
-    printf("a[%d] = ", i);
-    scanf("%d",&n);
-    a -> SetArray(i,n);
+    printf(str, i);
+    scanf("%d", &n);
+    a -> SetArray(i, n);
   }
   
   printf("要素数2 : ");
-  scanf("%d",&n);
+  scanf("%d", &n);
   b = new_Array(n);
+  sprintf(str, "b[%%%dd] = ", (int)log10(b -> GetSize() - 1) + 1);
   for(i = 0; i < n; i++){
     int n;
-    printf("b[%d] = ", i);
-    scanf("%d",&n);
-    b -> SetArray(i,n);
+    printf(str, i);
+    scanf("%d", &n);
+    b -> SetArray(i, n);
   }
 
   printf("aの合計 : %d\n", a -> Sum());
