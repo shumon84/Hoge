@@ -5,6 +5,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(extern)
 add_subdirectory(test)
+add_subdirectory(bundle)
 
 enable_testing()
 
