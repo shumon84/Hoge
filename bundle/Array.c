@@ -1,5 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
+#include<math.h>
 int size;
 int *ary;
 
@@ -19,8 +20,10 @@ int Sum(void){
 
 void Show(void){
   int i;
+  char str[32];
+  sprintf(str,"ary[%%%dd] = %%d\n", (int)log10((double)size - 1) + 1);
   for(i=0;i<size;i++){
-    printf("ary[%d] = %d\n",i,ary[i]);
+    printf(str,i,ary[i]);
   }
 }
 void _Array(void){
