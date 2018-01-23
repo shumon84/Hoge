@@ -14,6 +14,11 @@ CBinaryFile::CBinaryFile(const char *pszPath, const char *pszFlags){
 }
 
 CBinaryFile::CBinaryFile(const CBinaryFile &rother) : CFile(rother){
+  std::cout << "CBinaryFile(const CBinaryFile &rother)" << std::endl;
+}
+
+CBinaryFile::~CBinaryFile(){
+  std::cout << "~CBinaryFile()" << std::endl;
 }
 
 int CBinaryFile::ReadAndDump(char *bufHex, char *bufASCII, int nLength){
