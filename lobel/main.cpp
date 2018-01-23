@@ -32,29 +32,24 @@ void Load(CFile &rbin){
   std::cout << buffer << std::endl;
 }
 
+void Viss(int num){
+  std::cout << "Viss : " << num << std::endl;
+}
+
 int main(){
-  CTextFile txt("Test.txt", "w");
-  if(txt.IsValid() == false){
+  CBinaryFile *pbin;
+
+  Viss(1);
+
+  pbin = new CBinaryFile("Test.txt","r");
+  if(pbin == NULL){
     return 0;
   }
 
-  txt.WriteString("He sang, \"まったり　まったり　まったりな～♪\"");
-  txt.Close();
+  Viss(2);
+  delete pbin;
 
-  CBinaryFile bin("Test.txt", "r");
-  if(bin.IsValid() == false){
-    return 0;
-  }
-
-  const int READLENGTH = 16;
-  char bufHex[READLENGTH * 3 + 1];
-  char bufASCII[READLENGTH + 1];
-  int nRead;
-
-  do{
-    nRead = bin.ReadAndDump(bufHex, bufASCII, READLENGTH);
-    std::cout << bufHex << bufASCII << std::endl;
-  }while(nRead == READLENGTH);
+  Viss(3);
 
   return 0;
 }
