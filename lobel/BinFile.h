@@ -8,6 +8,7 @@ public:
   CBinaryFile();
   CBinaryFile(const char *pszPath, const char *pszFlags);
   CBinaryFile(const CBinaryFile &rother);
+  ~CBinaryFile();
 
 public:
   int ReadAndDump(char *bufHex, char *bufASCII, int nLength);
