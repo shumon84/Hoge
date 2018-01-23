@@ -4,7 +4,7 @@
 #include<iostream>
 #include<cstring>
 
-CBinaryFile::CBinaryFile() : CFile(){
+CBinaryFile::CBinaryFile(){
   std::cout << "CBinaryFile()" << std::endl;
 }
 
