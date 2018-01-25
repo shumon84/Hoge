@@ -1,0 +1,33 @@
+
+BinFile.cpp,268
+CBinaryFile::CBinaryFile(CBinaryFile7,92
+CBinaryFile::CBinaryFile(CBinaryFile11,168
+CBinaryFile::CBinaryFile(16,353
+CBinaryFile::~CBinaryFile(~CBinaryFile20,495
+int CBinaryFile::ReadAndDump(ReadAndDump24,573
+bool CBinaryFile::ModifyFlags(ModifyFlags48,1100
+
+File.cpp,267
+CFile::CFile(CFile4,37
+CFile::CFile(CFile10,132
+CFile::CFile(CFile17,310
+CFile::~CFile(~CFile24,514
+bool CFile::Open(Open31,615
+void CFile::Close(Close45,907
+size_t CFile::Read(Read52,1001
+size_t CFile::Write(Write59,1137
+bool CFile::Eof(Eof66,1281
+
+TextFile.cpp,185
+int CTextFile::ReadLine(ReadLine4,41
+CTextFile::CTextFile(38,732
+CTextFile::CTextFile(CTextFile42,812
+CTextFile::CTextFile(47,991
+bool CTextFile::ModifyFlags(ModifyFlags51,1125
+
+main.cpp,89
+bool Open(9,114
+void Write(18,322
+void Load(26,485
+void Viss(35,647
+int main(39,716
