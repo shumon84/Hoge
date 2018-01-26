@@ -15,41 +15,61 @@ bool Open(CFile &rfile, const char *pszFlags){
   return rfile.Open(buffer, pszFlags);
 }
 
-void Write(CTextFile &rtxt){
+void Read(CFile *pfile){
+  if(pfile -> Open("Test.txt", "r") == false){
+    return;
+  }
+
   char buffer[512];
 
-  std::cout << "何を書き込みますか" << std::flush;
-  std::cin >> buffer;
-  rtxt.WriteString(buffer);
-}
-
-void Load(CFile &rbin){
-  char buffer[512];
-  int nRead;
-
-  nRead = rbin.Read(buffer, numof(buffer));
-  buffer[nRead] = 0;
+  pfile -> Read(buffer, sizeof(buffer));
   std::cout << buffer << std::endl;
+  pfile -> Close();
 }
 
-void Viss(int num){
-  std::cout << "Viss : " << num << std::endl;
+void Write(CFile *pfile){
+  if(pfile -> Open("Test.txt", "w") == false){
+    return;
+  }
+  char buffer[] = "食すな危険";
+
+  pfile -> Write(buffer, sizeof(buffer));
+  pfile -> Close();
 }
 
 int main(){
-  CBinaryFile *pbin;
+  CFile *pfile;
 
-  Viss(1);
+  puts("CBinaryFileのインスタンス生成開始");
+  pfile = new CBinaryFile;
+  puts("CBinaryFileのインスタンス生成終了");
 
-  pbin = new CBinaryFile("Test.txt","r");
-  if(pbin == NULL){
+  if(pfile == NULL){
     return 0;
   }
 
-  Viss(2);
-  delete pbin;
+  puts("Write開始");
+  Write(pfile);
+  puts("Write終了");
+  puts("CBinaryFileのインスタンス破棄開始");
+  delete pfile;
+  puts("CBinaryFileのインスタンス破棄終了");
 
-  Viss(3);
+  puts("CTextFileのインスタンス生成開始");
+  pfile = new CTextFile;
+  puts("CTextFileのインスタンス生成開始");
+
+  if(pfile == NULL){
+    return 0;
+  }
+
+  puts("Read開始");
+  Read(pfile);
+  puts("Read終了");
+
+  puts("CTextFileのインスタンス破棄開始");
+  delete pfile;
+  puts("CTextFileのインスタンス破棄終了");
 
   return 0;
 }
