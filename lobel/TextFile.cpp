@@ -20,22 +20,7 @@ int CTextFile::ReadLine(char *buffer, size_t nSize){
   return nLength;
 }
 
-// bool CTextFile::Open(const char *pszFile, const char *pszFlags){
-//   std::cout << "CTextFile::Open" << std::endl;
-
-//   Close();
-
-//   char bufFlags[8];
-//   if(ModifyFlags(pszFlags, bufFlags, numof(bufFlags)) == false){
-//     return false;
-//   }
-
-//   m_pfile = fopen(pszFile, bufFlags);
-
-//   return m_pfile != NULL;
-// }
-
-CTextFile::CTextFile() : CFile(){
+CTextFile::CTextFile(){
   std::cout << "CTextFile()" << std::endl;
 }
 
@@ -46,6 +31,10 @@ CTextFile::CTextFile(const char *pszPath, const char *pszFlags){
 
 CTextFile::CTextFile(const CTextFile &rother) : CFile(rother){
     std::cout << "CTextFile(const CTextFile &rother)" << std::endl;
+}
+
+CTextFile::~CTextFile(){
+  std::cout << "CTextFile::~CTextFile()" << std::endl;
 }
 
 bool CTextFile::ModifyFlags(const char *pszSource, char *pszDest, int nSize){
