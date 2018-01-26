@@ -21,7 +21,7 @@ public:
   CFile();                      // defaut constructor
   CFile(const CFile &other);    // copy constructor
   CFile(const char *pszPath, const char *pszFlags); // constructor with parameters
-  ~CFile();                     // destructor
+  virtual ~CFile();                     // destructor
 
   // file IO
 public:
