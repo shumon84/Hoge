@@ -9,6 +9,7 @@ public:
   CTextFile();
   CTextFile(const char *pszPath, const char *pszFlags);
   CTextFile(const CTextFile &rother);
+  ~CTextFile();
 
 public:
   int WriteString(const char *pszString){ // Write text
