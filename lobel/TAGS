@@ -18,16 +18,16 @@ size_t CFile::Read(Read52,1001
 size_t CFile::Write(Write59,1137
 bool CFile::Eof(Eof66,1281
 
-TextFile.cpp,185
+TextFile.cpp,235
 int CTextFile::ReadLine(ReadLine4,41
-CTextFile::CTextFile(38,732
-CTextFile::CTextFile(CTextFile42,812
-CTextFile::CTextFile(47,991
-bool CTextFile::ModifyFlags(ModifyFlags51,1125
+CTextFile::CTextFile(CTextFile23,401
+CTextFile::CTextFile(CTextFile27,471
+CTextFile::CTextFile(32,650
+CTextFile::~CTextFile(~CTextFile36,784
+bool CTextFile::ModifyFlags(ModifyFlags40,867
 
-main.cpp,89
+main.cpp,71
 bool Open(9,114
-void Write(18,322
-void Load(26,485
-void Viss(35,647
-int main(39,716
+void Read(18,322
+void Write(30,532
+int main(40,724
