@@ -7,6 +7,17 @@ CBinaryFile::~CBinaryFile(~CBinaryFile20,495
 int CBinaryFile::ReadAndDump(ReadAndDump24,573
 bool CBinaryFile::ModifyFlags(ModifyFlags48,1100
 
+EncFile.cpp,365
+const unsigned char XOR_FACTOR 4,40
+CEncodeFile::CEncodeFile(CEncodeFile6,98
+CEncodeFile::CEncodeFile(CEncodeFile10,187
+CEncodeFile::CEncodeFile(16,386
+CEncodeFile::~CEncodeFile(~CEncodeFile20,544
+size_t CEncodeFile::Read(Read24,635
+size_t CEncodeFile::Write(Write32,794
+void CEncodeFile::Encode(Encode53,1191
+void CEncodeFile::Decode(Decode60,1401
+
 File.cpp,267
 CFile::CFile(CFile4,37
 CFile::CFile(CFile10,132
@@ -26,8 +37,4 @@ CTextFile::CTextFile(32,650
 CTextFile::~CTextFile(~CTextFile36,784
 bool CTextFile::ModifyFlags(ModifyFlags40,867
 
-main.cpp,71
-bool Open(9,114
-void Read(18,322
-void Write(30,532
-int main(40,724
+main.cpp,0
