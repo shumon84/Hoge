@@ -23,7 +23,7 @@ CEncodeFile::~CEncodeFile(){
 
 size_t CEncodeFile::Read(void *buffer, size_t nSize){
   size_t nRead;
-  nRead = Read(buffer, nSize);
+  nRead = CBinaryFile::Read(buffer, nSize);
   Decode(buffer, nRead);
 
   return nRead;
@@ -44,7 +44,7 @@ size_t CEncodeFile::Write(const void *buffer, size_t nSize){
   }
 
   Encode(bufEncode, buffer, nSize);
-  nWrite = Write(bufEncode, nSize);
+  nWrite = CBinaryFile::Write(bufEncode, nSize);
 
   delete [] bufEncode;
   return nWrite;
