@@ -30,10 +30,10 @@ int CBinaryFile::ReadAndDump(char *bufHex, char *bufASCII, int nLength){
   bufASCII[nLength] = 0;
 
   for (i = 0; i < nRead; i++){
-    sprintf(&bufHex[i * 3], "%02X", (unsigned char)bufASCII[i]);
+    sprintf(&bufHex[i * 3], "%02x ", (unsigned char)bufASCII[i]);
   }
 
-  memset(&bufHex[i * 3],  ' ', (nLength - nRead) * 3);
+  memset(&bufHex[i * 3], ' ', (nLength - nRead) * 3);
   bufHex[nLength * 3] = 0;
 
   for (i = 0; i < nRead; i++){
