@@ -33,8 +33,8 @@ private:
 
   // file controll
 public:
-  size_t Read(void *pDate, size_t nSize); // read file
-  size_t Write(const void *pData, size_t nSize); // write file
+  virtual size_t Read(void *pDate, size_t nSize); // read file
+  virtual size_t Write(const void *pData, size_t nSize); // write file
 
 public:
   bool IsValid() const{         // is the value of m_pfile valid
