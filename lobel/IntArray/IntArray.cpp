@@ -2,79 +2,56 @@
 #include<memory>
 #include"IntArray.h"
 
-using namespace std;
-
 // コンストラクタ
-CIntArray::CIntArray(const int nNumOf)
-{
+CIntArray::CIntArray(const int nNumOf) : m_nNumOf(nNumOf){
   m_pnum = new int[nNumOf];
-  if(m_pnum == NULL)
-    m_nNumOf = 0;
-  else
-    {
-      m_nNumOf = nNumOf;
-      memset(m_pnum, 0, nNumOf * sizeof *m_pnum);
-    }
+  if(m_pnum == NULL){
+    memset(m_pnum, 0, nNumOf * sizeof *m_pnum);
+  }
 
-  cout << "コンストラクタが呼ばれました。"
-       << "要素数は " << m_nNumOf << " です。" << endl;
+  std::cout << "コンストラクタが呼ばれました。"  << "要素数は " << m_nNumOf << " です。" << std::endl;
 }
 
 // コピーコンストラクタ
-CIntArray::CIntArray(const CIntArray& rother)
-{
-  if(rother.Success() == false)
-    {
-      m_pnum   = NULL;
-      m_nNumOf = 0;
-    }
-  else
-    {
-      m_pnum = new int[rother.NumOf()];
-      if(m_pnum == NULL)
-        {
-          m_nNumOf = 0;
-          return;
-        }
-
-      // memcpy はメモリの内容をバイト単位でコピーする関数です
+CIntArray::CIntArray(const CIntArray &rother) : m_nNumOf(rother.NumOf()){
+  if(rother.Success() == false){
+    m_pnum   = NULL;
+  }
+  else{
+    m_pnum = new int[rother.NumOf()];
+    if(m_pnum != NULL){
       memcpy(m_pnum, rother.m_pnum, rother.SizeOf());
-      m_nNumOf = rother.m_nNumOf;
     }
+  }
 
-  cout << "コピーコンストラクタが呼ばれました。" << endl;
+  std::cout << "コピーコンストラクタが呼ばれました。" << std::endl;
 }
 
 // デストラクタ
-CIntArray::~CIntArray()
-{
-  if(m_pnum != NULL)
+CIntArray::~CIntArray(){
+  if(m_pnum != NULL){
     delete [] m_pnum;
-
-  cout << "デストラクタが呼ばれました。"
-       << "要素数は " << m_nNumOf << " でした。" << endl;
+  }
+  std::cout << "デストラクタが呼ばれました。" << "要素数は " << m_nNumOf << " でした。" << std::endl;
 }
 
 // メンバへのアクセス関数
-int CIntArray::Get(const int index) const
-{
+int CIntArray::Get(const int index) const{
   CheckIndex(index);
   return m_pnum[index];
 }
 
-void CIntArray::Set(const int index, const int value)
-{
+void CIntArray::Set(const int index, const int value){
   CheckIndex(index);
   m_pnum[index] = value;
 }
 
 // インデックスのチェック
-void CIntArray::CheckIndex(const int index) const
-{
-  if((unsigned int)index < (unsigned int)m_nNumOf)
+void CIntArray::CheckIndex(const int index) const{
+  if(Success() == true && (unsigned int)index < (unsigned int)m_nNumOf){
     return;
+  }
 
-  cout << "インデックスが不正です！" << endl
-       << "値 : " << index << endl;
+  std::cout << "インデックスが不正です！" << std::endl << "値 : " << index << std::endl;
   exit(1);
 }
