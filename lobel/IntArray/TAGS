@@ -1,0 +1,12 @@
+
+IntArray.cpp,246
+CIntArray::CIntArray(6,83
+CIntArray::CIntArray(16,407
+CIntArray::~CIntArray(~CIntArray31,785
+int CIntArray::Get(Get39,1022
+void CIntArray::Set(Set44,1113
+void CIntArray::CheckIndex(CheckIndex50,1254
+void CIntArray::Error(Error59,1511
+
+main.cpp,15
+int main(2,18
