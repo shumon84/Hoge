@@ -7,7 +7,7 @@ class CIntArray{
   // メンバ変数
 private:
   int* m_pnum;   // 動的配列
-  int m_nNumOf; // 配列の要素数
+  const int m_nNumOf; // 配列の要素数
 
   // コンストラクタ・デストラクタ
 public:
