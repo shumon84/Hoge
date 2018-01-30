@@ -1,5 +1,5 @@
 
-IntArray.cpp,340
+IntArray.cpp,388
 CIntArray::CIntArray(CIntArray6,83
 CIntArray::CIntArray(CIntArray20,441
 CIntArray::~CIntArray(~CIntArray39,874
@@ -9,6 +9,7 @@ void CIntArray::CheckIndex(CheckIndex58,1343
 bool CIntArray::Copy(Copy67,1600
 void CIntArray::Init(Init88,1962
 void CIntArray::Release(Release93,2022
+void CIntArray::operator = operator =100,2115
 
 main.cpp,15
 int main(3,39
