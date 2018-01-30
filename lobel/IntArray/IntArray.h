@@ -7,13 +7,22 @@ class CIntArray{
   // メンバ変数
 private:
   int* m_pnum;   // 動的配列
-  const int m_nNumOf; // 配列の要素数
+  int m_nNumOf; // 配列の要素数
 
   // コンストラクタ・デストラクタ
 public:
   CIntArray(const int nNumOf);
   CIntArray(const CIntArray &rother);  // コピーコンストラクタ
   ~CIntArray();
+
+  // コピー
+public:
+  bool Copy(const CIntArray &rother); // 配列のコピー
+
+  // 諸関数
+private:
+  void Init(); // メンバの初期化
+  void Release(); // メモリの解放
 
   // メンバへのアクセス関数
 public:
@@ -26,13 +35,17 @@ private:
 
   // その他の情報の取得
 public:
-  bool Success() const;  // メモリの確保が成功したか
+  bool IsValid() const;  // メモリの確保が成功したか
   int NumOf() const;     // 配列の要素数
   int SizeOf() const;    // 配列のサイズ
+
+  // 演算子オーバーロード
+public:
+  void operator = (const CIntArray &rother);
 };
 
 // メモリの確保が成功したか
-inline bool CIntArray::Success() const{
+inline bool CIntArray::IsValid() const{
   return m_pnum != NULL;
 }
 
