@@ -44,6 +44,7 @@ public:
   void operator =(const CIntArray &rother);
   int& operator [](int index);
   int operator [](int index) const;
+  operator const int*(void) const;
 };
 
 // メモリの確保が成功したか
@@ -59,6 +60,10 @@ inline int CIntArray::NumOf() const{
 // 配列のサイズ
 inline int CIntArray::SizeOf() const{
   return m_nNumOf * sizeof *m_pnum;
+}
+
+inline CIntArray::operator const int*(void) const{
+  return m_pnum;
 }
 
 #endif
