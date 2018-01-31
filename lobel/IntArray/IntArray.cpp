@@ -97,6 +97,16 @@ void CIntArray::Release(){
   }
 }
 
-void CIntArray::operator = (const CIntArray &rother){
+void CIntArray::operator =(const CIntArray &rother){
   Copy(rother);
+}
+
+int &CIntArray::operator [](int index){
+  CheckIndex(index);
+  return m_pnum[index];
+}
+
+int CIntArray::operator [](int index) const{
+  CheckIndex(index);
+  return m_pnum[index];
 }
