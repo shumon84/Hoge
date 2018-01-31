@@ -41,7 +41,9 @@ public:
 
   // 演算子オーバーロード
 public:
-  void operator = (const CIntArray &rother);
+  void operator =(const CIntArray &rother);
+  int& operator [](int index);
+  int operator [](int index) const;
 };
 
 // メモリの確保が成功したか
