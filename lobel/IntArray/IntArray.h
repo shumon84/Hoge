@@ -11,7 +11,7 @@ private:
 
   // コンストラクタ・デストラクタ
 public:
-  CIntArray(const int nNumOf);
+  explicit CIntArray(const int nNumOf);
   CIntArray(const CIntArray &rother);  // コピーコンストラクタ
   ~CIntArray();
 
