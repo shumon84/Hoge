@@ -97,8 +97,9 @@ void CIntArray::Release(){
   }
 }
 
-void CIntArray::operator =(const CIntArray &rother){
+CIntArray& CIntArray::operator =(const CIntArray &rother){
   Copy(rother);
+  return *this;
 }
 
 int &CIntArray::operator [](int index){
