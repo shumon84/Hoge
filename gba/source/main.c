@@ -1,14 +1,25 @@
-#include "toolbox.h"
+#include<gba.h>
 
-int main()
-{
-    REG_DISPCNT= DCNT_MODE3 | DCNT_BG2;
+void WaitForVsync(void){
+  while(*(vu16*)0x4000006 >= 160);
+  while(*(vu16*)0x4000006 < 160);
+}
 
-    m3_plot( 120, 80, RGB15(31, 0, 0) );    // or CLR_RED
-    m3_plot( 136, 80, RGB15( 0,31, 0) );    // or CLR_LIME
-    m3_plot( 120, 96, RGB15( 0, 0,31) );    // or CLR_BLUE
+void Mode3PutPixel(unsigned x, unsigned y, unsigned col){
+  static u16 *ScreenBuffer = (u16*)0x06000000;
+  ScreenBuffer[y * 240 + x] = col;
+}
 
-    while(1);
+int main(void){
+  SetMode(MODE_3 | BG2_ENABLE);
 
-    return 0;
+  u32 x = 50;
+  u32 y = 50;
+  u16 col = RGB5(31,31,31);
+
+  Mode3PutPixel(x,y,col);
+
+  while(1){
+    WaitForVsync();
+  }
 }
