@@ -27,55 +27,81 @@ void Mode3DrawImage(unsigned x,unsigned y,const unsigned short *image){
         Mode3PutPixel(j+x,i+y,image[i*34+j]);
 }
 
-#define x2 x1+30
-#define y2 y1+30
+void SpriteMove(u32 num,s32 x,s32 y){
+  OBJATTR *sp=(OBJATTR*)OAM +num;
+  sp->attr1 &= 0xfe00;
+  sp->attr0 &= 0xff00;
+  sp->attr1 |= (x & 0x01ff);
+  sp->attr0 |= (y & 0x00ff);
+}
+
+void SpriteInit(void){
+  u32 i;
+  for(i=0;i<128;i++){
+    SpriteMove(i,240,160);
+  }
+}
+
+void SpriteSetSize(u32 num, u32 size, u32 from, u32 col){
+  OBJATTR *sp = (OBJATTR*)OAM + num;
+  sp->attr0 &= 0x1fff;
+  sp->attr1 &= 0x3fff;
+  sp->attr0 |= col | from | (160);
+  sp->attr1 |= size | (240);
+}
+
+void SpriteSetChr(u32 num, u32 ch){
+  OBJATTR *sp = (OBJATTR*)OAM + num;
+  sp->attr2 &= 0xfc00;
+  sp->attr2 |= ch;
+}
+
+#include"zero_stand.h"
 
 int main(void){
-  SetMode(MODE_3 | BG2_ENABLE);
+  // モード設定
+  SetMode(MODE_0 | OBJ_ENABLE | OBJ_1D_MAP);
+  u16* oam = OBJ_BASE_ADR;// キャラクタデータ
+  u16* pal = OBJ_COLORS;// パレットデータ
+  u32 i;
+  u32 sprTilesLen=10;
+  u32 sprTiles[256];
+  u32 sprPal[16];
 
-  u32 x1 = 0;
-  u32 y1 = 0;
-  u16 white = RGB5(31,31,31);
-  u16 red = RGB5(31,0,0);
-  u16 green = RGB5(0,31,0);
-  u16 blue = RGB5(0,0,31);
-  u16 black = RGB5(0,0,0);
-  u16 x=0,y=0;
-  while(1){
-    WaitForVsync();
-    Mode3DrawImage(x,y,zeroBitmap);
-    //Mode3DrawBox(x,y,x+10,y+10,black);
-    if(REG_KEYINPUT & KEY_UP){
+  for(i=0; i<sprTilesLen/2; i++)
+    {
+      oam[i] = sprTiles[i];
     }
-    else{
-      if(y>0){
-        Mode3DrawBox(0,0,240,120,black);
-        y--;
-      }
+
+  for(i=0; i<16; i++)
+    {
+      pal[i] = sprPal[i];
     }
-    if(REG_KEYINPUT & KEY_DOWN){
+
+  SpriteInit();
+
+  // !（ビックリマーク）の表示
+  SpriteSetSize(0, OBJ_SIZE(Sprite_8x8), OBJ_SQUARE, OBJ_16_COLOR);
+  SpriteSetChr (0, 1);
+  SpriteMove   (0, 20, 20);
+
+  u32 x = 40;
+  u32 y = 40;
+
+  // 円の表示
+  SpriteSetSize(1, OBJ_SIZE(Sprite_32x32), OBJ_SQUARE, OBJ_16_COLOR);
+  SpriteSetChr (1, 224);
+  SpriteMove   (1, x, y);
+
+  for(;;)
+    {
+      WaitForVsync();
+
+      if( !(REG_KEYINPUT & KEY_UP)   ) y--;
+      if( !(REG_KEYINPUT & KEY_DOWN) ) y++;
+      if( !(REG_KEYINPUT & KEY_LEFT) ) x--;
+      if( !(REG_KEYINPUT & KEY_RIGHT)) x++;
+      SpriteMove   (1, x, y);
     }
-    else{
-      if(y<160){
-        Mode3DrawBox(0,0,240,120,black);
-        y++;
-      }
-    }
-    if(REG_KEYINPUT & KEY_LEFT){
-    }
-    else{
-      if(x>0){
-        Mode3DrawBox(0,0,240,120,black);
-        x--;
-      }
-    }
-    if(REG_KEYINPUT & KEY_RIGHT){
-    }
-    else{
-      if(x<240){
-        Mode3DrawBox(0,0,240,120,black);
-        x++;
-      }
-    }
-  }
+
 }
