@@ -1,5 +1,5 @@
 #include<gba.h>
-#include"zero.h"
+#include"clip_2.h"
 
 void WaitForVsync(void){
   while(*(vu16*)0x4000006 >= 160);
@@ -52,38 +52,29 @@ void SpriteSetSize(u32 num, u32 size, u32 from, u32 col){
 
 void SpriteSetChr(u32 num, u32 ch){
   OBJATTR *sp = (OBJATTR*)OAM + num;
-  sp->attr2 &= 0xfc00;
+  sp->attr2 &= 0xf000;
   sp->attr2 |= ch;
 }
-
-#include"zero_stand.h"
 
 int main(void){
   // モード設定
   SetMode(MODE_0 | OBJ_ENABLE | OBJ_1D_MAP);
-  u16* oam = OBJ_BASE_ADR;// キャラクタデータ
-  u16* pal = OBJ_COLORS;// パレットデータ
-  u32 i;
-  u32 sprTilesLen=10;
-  u32 sprTiles[256];
-  u32 sprPal[16];
 
-  for(i=0; i<sprTilesLen/2; i++)
+  u16* oam = OBJ_BASE_ADR; // キャラクタデータ
+  u16* pal = OBJ_COLORS;  // パレットデータ
+  u32 i;
+
+  for(i=0; i<clip_2TilesLen/2; i++)
     {
-      oam[i] = sprTiles[i];
+      oam[i] = clip_2Tiles[i];
     }
 
   for(i=0; i<16; i++)
     {
-      pal[i] = sprPal[i];
+      pal[i] = clip_2Pal[i];
     }
 
   SpriteInit();
-
-  // !（ビックリマーク）の表示
-  SpriteSetSize(0, OBJ_SIZE(Sprite_8x8), OBJ_SQUARE, OBJ_16_COLOR);
-  SpriteSetChr (0, 1);
-  SpriteMove   (0, 20, 20);
 
   u32 x = 40;
   u32 y = 40;
@@ -93,6 +84,11 @@ int main(void){
   SpriteSetChr (1, 224);
   SpriteMove   (1, x, y);
 
+  // !（ビックリマーク）の表示
+  SpriteSetSize(0, OBJ_SIZE(Sprite_8x8), OBJ_SQUARE, OBJ_16_COLOR);
+  SpriteSetChr (0, 1);
+  SpriteMove   (0, 20, 20);
+
   for(;;)
     {
       WaitForVsync();
@@ -101,6 +97,7 @@ int main(void){
       if( !(REG_KEYINPUT & KEY_DOWN) ) y++;
       if( !(REG_KEYINPUT & KEY_LEFT) ) x--;
       if( !(REG_KEYINPUT & KEY_RIGHT)) x++;
+
       SpriteMove   (1, x, y);
     }
 
