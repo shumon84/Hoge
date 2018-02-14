@@ -27,18 +27,39 @@ void Mode3DrawImage(unsigned x,unsigned y,const unsigned short *image){
         Mode3PutPixel(j+x,i+y,image[i*34+j]);
 }
 
-void SpriteMove(u32 num,s32 x,s32 y){
-  OBJATTR *sp=(OBJATTR*)OAM +num;
+void SpriteMove(u32 num,s32 *x,s32 *y){
+  static s32 bx=0;
+  static s32 by=0;
+  static bool bd=true;
+  OBJATTR *sp=(OBJATTR*)OAM + num;
+  if(bx>*x)
+    {
+      sp->attr1 |= 0x1000;
+      if(bd==true)
+        *x-=32;
+      bd=false;
+    }
+  else if(bx<*x)
+    {
+      sp->attr1 &= 0xefff;
+      if(bd==false)
+        *x+=32;
+      bd=true;
+    }
+
   sp->attr1 &= 0xfe00;
   sp->attr0 &= 0xff00;
-  sp->attr1 |= (x & 0x01ff);
-  sp->attr0 |= (y & 0x00ff);
+  sp->attr1 |= (*x & 0x01ff);
+  sp->attr0 |= (*y & 0x00ff);
+
+  bx=*x;
+  by=*y;
 }
 
 void SpriteInit(void){
   u32 i;
   for(i=0;i<128;i++){
-    SpriteMove(i,240,160);
+    SpriteMove(i,(s32*)240,(s32*)160);
   }
 }
 
@@ -56,6 +77,11 @@ void SpriteSetChr(u32 num, u32 ch){
   sp->attr2 |= ch;
 }
 
+
+#include"zero_stand.h"
+#include"test.h"
+#include"chr.h"
+
 int main(void){
   // モード設定
   SetMode(MODE_0 | OBJ_ENABLE | OBJ_1D_MAP);
@@ -64,30 +90,24 @@ int main(void){
   u16* pal = OBJ_COLORS;  // パレットデータ
   u32 i;
 
-  for(i=0; i<clip_2TilesLen/2; i++)
+  for(i=0; i<testTilesLen/2; i++)
     {
-      oam[i] = clip_2Tiles[i];
+      oam[i] = testTiles[i];
     }
 
-  for(i=0; i<16; i++)
+  for(i=0; i<testPalLen/2; i++)
     {
-      pal[i] = clip_2Pal[i];
+      pal[i] = testPal[i];
     }
 
   SpriteInit();
 
-  u32 x = 40;
-  u32 y = 40;
+  s32 x = 40;
+  s32 y = 40;
 
-  // 円の表示
-  SpriteSetSize(1, OBJ_SIZE(Sprite_32x32), OBJ_SQUARE, OBJ_16_COLOR);
-  SpriteSetChr (1, 224);
-  SpriteMove   (1, x, y);
-
-  // !（ビックリマーク）の表示
-  SpriteSetSize(0, OBJ_SIZE(Sprite_8x8), OBJ_SQUARE, OBJ_16_COLOR);
-  SpriteSetChr (0, 1);
-  SpriteMove   (0, 20, 20);
+  SpriteSetSize(0, OBJ_SIZE(Sprite_32x32), OBJ_SQUARE, OBJ_16_COLOR);
+  SpriteSetChr (0, 0);
+  SpriteMove   (0, &x, &y);
 
   for(;;)
     {
@@ -98,7 +118,7 @@ int main(void){
       if( !(REG_KEYINPUT & KEY_LEFT) ) x--;
       if( !(REG_KEYINPUT & KEY_RIGHT)) x++;
 
-      SpriteMove   (1, x, y);
+      SpriteMove   (0, &x, &y);
     }
 
 }
