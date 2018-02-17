@@ -45,13 +45,14 @@ void SpriteSetChr(u32 num, u32 ch)
   OBJATTR* sp = (OBJATTR*)OAM + num;
 
   sp->attr2 &= 0xfc00;
-  sp->attr2 |= ch+16;
+  sp->attr2 |= ch;
 }
 //---------------------------------------------------------------------------
+
 void SpriteInit(void)
 {
   u32 i;
-  for(i=0; i<128; i++)
+  for(i=0; i<256; i++)
     {
       SpriteMove(i, 240, 160);
     }
@@ -63,7 +64,7 @@ void SpriteShowNumber(u32 base, s32 num)
 
   for(i=5-1; i>=0; i--)
     {
-      SpriteSetChr(base + i, num % 10);
+      SpriteSetChr(base + i, 240 + num % 10);
       num /= 10;
     }
 }
@@ -90,95 +91,87 @@ void SpriteSetDatPal(u16* pal)
     }
 }
 //---------------------------------------------------------------------------
-int main(void)
-{
+int main(void){
   // モード設定
   SetMode(MODE_0 | OBJ_ENABLE | OBJ_1D_MAP);
 
-  SpriteInit();
-  SpriteSetDatChr((u16*)&clip_2Tiles, clip_2TilesLen);
-  SpriteSetDatPal((u16*)&clip_2Pal);
-
+  u16* oam = OBJ_BASE_ADR; // キャラクタデータ
+  u16* pal = OBJ_COLORS;  // パレットデータ
   u32 i;
 
-  // タイマー0  5個のスプライトを使用
-  for(i=0; i<5; i++)
+  for(i=0; i<chrTilesLen; i++)
     {
-      SpriteSetSize (i, OBJ_SIZE(Sprite_8x8), OBJ_SQUARE, OBJ_16_COLOR);
-      SpriteSetChr  (i, 0);
-      SpriteMove    (i, 20+i*8, 20);
-      SpriteSetPalNo(i, 0);
+      oam[i] = chrTiles[i];
     }
 
-  // タイマー1  5個のスプライトを使用
-  for(i=5; i<10; i++)
+  for(i=0; i<256; i++)
     {
-      SpriteSetSize (i, OBJ_SIZE(Sprite_8x8), OBJ_SQUARE, OBJ_16_COLOR);
-      SpriteSetChr  (i, 0);
-      SpriteMove    (i, 40+i*8, 20);
-      SpriteSetPalNo(i, 0);
+      pal[i] = chrPal[i];
     }
 
-  // タイマー設定
+  /* for(i=chrTilesLen/2;i<(chrTilesLen+clip_2TilesLen)/2;i++) */
+  /*   { */
+  /*     oam[i] = clip_2Tiles[i]; */
+  /*   } */
+
+  /* for(i=16; i<32; i++) */
+  /*   { */
+  /*     pal[i] = clip_2Pal[i]; */
+  /*   } */
+
+  SpriteInit();
+
+  for(i=0;i<4;i++)
+    {
+      SpriteSetChr(i,(i+8)*32);
+      SpriteSetSize(i, OBJ_SIZE(Sprite_32x32), OBJ_SQUARE, OBJ_256_COLOR);
+      SpriteSetPalNo(i,0);
+    }
+
+  /* // タイマー0  5個のスプライトを使用 */
+  /* for(i=10; i<15; i++) */
+  /*   { */
+  /*     SpriteSetSize (i, OBJ_SIZE(Sprite_8x8), OBJ_SQUARE, OBJ_16_COLOR); */
+  /*     SpriteSetChr  (i, 240+0); */
+  /*     SpriteMove    (i, 20+i*8, 20); */
+  /*     SpriteSetPalNo(i, 0); */
+  /*   } */
+
+  /* // タイマー1  5個のスプライトを使用 */
+  /* for(i=15; i<20; i++) */
+  /*   { */
+  /*     SpriteSetSize (i, OBJ_SIZE(Sprite_8x8), OBJ_SQUARE, OBJ_16_COLOR); */
+  /*     SpriteSetChr  (i, 240+0); */
+  /*     SpriteMove    (i, 40+i*8, 20); */
+  /*     SpriteSetPalNo(i, 0); */
+  /*   } */
   REG_TM0CNT_L = 0;
   REG_TM1CNT_L = 0;
   REG_TM0CNT_H = 2 | TIMER_START;
-  REG_TM1CNT_H = 1<<2 | TIMER_START;
+  REG_TM1CNT_H = 2 | TIMER_START;
 
+  s32 x = 40;
+  s32 y = 40;
+  u32 now = 0;
   for(;;)
     {
       WaitForVsync();
 
-      SpriteShowNumber(0, REG_TM0CNT_L);
-      SpriteShowNumber(5, REG_TM1CNT_L);
+      if( !(REG_KEYINPUT & KEY_UP)   ) y--;
+      if( !(REG_KEYINPUT & KEY_DOWN) ) y++;
+      if( !(REG_KEYINPUT & KEY_LEFT) ) x--;
+      if( !(REG_KEYINPUT & KEY_RIGHT)) x++;
+
+      if((REG_TM0CNT_L&0x03)==0x03)
+        {
+          /* REG_TM1CNT_L=0; */
+          SpriteMove(now,240,160);
+          now=(now+1)%4;
+        }
+
+      /* SpriteShowNumber(0,REG_TM0CNT_L); */
+      /* SpriteShowNumber(5,now); */
+      SpriteMove   (now, x, y);
     }
+
 }
-/* int main(void){ */
-/*   // モード設定 */
-/*   SetMode(MODE_0 | OBJ_ENABLE | OBJ_1D_MAP); */
-
-/*   u16* oam = OBJ_BASE_ADR; // キャラクタデータ */
-/*   u16* pal = OBJ_COLORS;  // パレットデータ */
-/*   u32 i; */
-
-/*   for(i=0; i<clip_2TilesLen/2; i++) */
-/*     { */
-/*       oam[i] = clip_2Tiles[i]; */
-/*     } */
-
-/*   for(i=0; i<clip_2PalLen/2; i++) */
-/*     { */
-/*       pal[i] = clip_2Pal[i]; */
-/*     } */
-
-/*   SpriteInit(); */
-
-/*   // ASCII表示文字 */
-/*   for(i=' ';i<'~';i++) */
-/*     { */
-/*       SpriteSetSize(i,OBJ_SIZE(Sprite_8x8),OBJ_SQUARE,OBJ_16_COLOR); */
-/*       SpriteSetChr(i,i-' '); */
-/*     } */
-
-/*   /\* s32 x = 40; *\/ */
-/*   /\* s32 y = 40; *\/ */
-
-/*   /\* SpriteSetSize(0, OBJ_SIZE(Sprite_32x32), OBJ_SQUARE, OBJ_16_COLOR); *\/ */
-/*   /\* SpriteSetChr (0, 0); *\/ */
-/*   /\* SpriteMove   (0, &x, &y); *\/ */
-/*   char str[]="10:21\n34,59"; */
-/*   u32 len=strlen(str); */
-/*   print(str,len); */
-/*   for(;;) */
-/*     { */
-/*       WaitForVsync(); */
-
-/*       /\* if( !(REG_KEYINPUT & KEY_UP)   ) y--; *\/ */
-/*       /\* if( !(REG_KEYINPUT & KEY_DOWN) ) y++; *\/ */
-/*       /\* if( !(REG_KEYINPUT & KEY_LEFT) ) x--; *\/ */
-/*       /\* if( !(REG_KEYINPUT & KEY_RIGHT)) x++; *\/ */
-
-/*       /\* SpriteMove   (0, &x, &y); *\/ */
-/*     } */
-
-/* } */
