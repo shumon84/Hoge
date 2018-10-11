@@ -23,7 +23,7 @@ void error(void){
 struct Array *new_Array(int size){
   struct Array *array = malloc(sizeof(struct Array));
   
-  void *handle = dlopen("libArray.so", RTLD_NOW | RTLD_NODELETE);
+  void *handle = dlopen("libArray.so", RTLD_NOW | RTLD_DEEPBIND);
   error();
 
   if(handle != NULL){
